@@ -1,6 +1,6 @@
-# 📌 AI-Powered SEO Automation Workflow (n8n)
+#  AI-Powered SEO Automation Workflow (n8n)
 
-## 🔍 Project Overview
+##  Project Overview
 
 This project implements an automated AI-powered SEO intelligence system using **n8n**.
 
@@ -10,7 +10,7 @@ This solution fulfills the assignment objective of building an end-to-end SEO au
 
 ---
 
-## 🎯 Assignment Objective Alignment
+##  Assignment Objective Alignment
 
 | Assignment Requirement | Implementation |
 |------------------------|----------------|
@@ -23,21 +23,21 @@ This solution fulfills the assignment objective of building an end-to-end SEO au
 The assignment specifies metrics such as **keywords, impressions, clicks, CTR, or ranking position**.
 
 This implementation includes:
-- ✅ Target keyword  
-- ✅ SERP ranking position  
+-  Target keyword  
+-  SERP ranking position  
 
 Ranking position is explicitly listed as an acceptable SEO metric in the assignment.
 
 ---
 
-## ⚙️ Workflow Architecture
+##  Workflow Architecture
 
 The workflow consists of the following automated steps:
 
-### 1️⃣ Daily Schedule Trigger
+### 1️ Daily Schedule Trigger
 Executes the workflow automatically at a scheduled time.
 
-### 2️⃣ Fetch SERP Data (SerpAPI)
+### 2️ Fetch SERP Data (SerpAPI)
 Retrieves the top 10 Google organic results for the keyword:
 
 Extracted data includes:
@@ -46,10 +46,10 @@ Extracted data includes:
 - URL
 - Snippet
 
-### 3️⃣ Extract & Structure Results
+### 3️ Extract & Structure Results
 Formats keyword and ranking data into structured JSON for analysis.
 
-### 4️⃣ AI SEO Intelligence Report Generation
+### 4️ AI SEO Intelligence Report Generation
 Uses an LLM (Groq – openai/gpt-oss-20b) to generate a structured consulting report including:
 
 - Executive Summary  
@@ -66,7 +66,7 @@ The AI is instructed to:
 - Avoid generic advice
 - Tie recommendations directly to ranking patterns
 
-### 5️⃣ Report Storage
+### 5️ Report Storage
 The generated report is:
 - Appended to Google Sheets (with timestamp)
 - Converted to Markdown format
@@ -74,7 +74,7 @@ The generated report is:
 
 ---
 
-## 📊 SEO Metrics Used
+##  SEO Metrics Used
 
 This workflow utilizes the following real SEO metrics:
 
@@ -89,7 +89,7 @@ This implementation focuses on **keyword and ranking position**, which are valid
 
 ---
 
-## 🧠 Data Source Selection Justification
+##  Data Source Selection Justification
 
 The assignment suggested the following data sources:
 
@@ -116,7 +116,7 @@ The solution still satisfies all core assignment goals:
 
 ---
 
-## 🔐 Setup Instructions
+##  Setup Instructions
 
 ### Step 1: Import Workflow
 - Open n8n
@@ -130,14 +130,14 @@ Add the following credentials in n8n:
 - Google Sheets OAuth
 - Google Drive OAuth
 
-⚠️ API keys are not included in this repository for security reasons.
+ API keys are not included in this repository for security reasons.
 
 ### Step 3: Activate Workflow
 Enable the workflow to start automated daily execution.
 
 ---
 
-## 📂 Output
+##  Output
 
 Each execution generates:
 
@@ -147,18 +147,18 @@ Each execution generates:
 
 ---
 
-## 🏆 Evaluation Criteria Coverage
+##  Evaluation Criteria Coverage
 
 | Criteria | Status |
 |-----------|--------|
-| Real Use Case | ✅ Uses live Google SERP data |
-| Functionality | ✅ Fully automated workflow |
-| Insight Quality | ✅ Structured AI-generated recommendations |
-| Workflow Clarity | ✅ Modular and well-structured node design |
+| Real Use Case |  Uses live Google SERP data |
+| Functionality |  Fully automated workflow |
+| Insight Quality |  Structured AI-generated recommendations |
+| Workflow Clarity |  Modular and well-structured node design |
 
 ---
 
-## 🚀 Technologies Used
+##  Technologies Used
 
 - n8n (Automation Platform)
 - SerpAPI (SEO Data Source)
@@ -168,7 +168,7 @@ Each execution generates:
 
 ---
 
-## 🔮 Future Improvements
+##  Future Improvements
 
 - Multi-keyword monitoring
 - Historical ranking comparison
