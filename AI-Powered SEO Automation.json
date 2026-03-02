@@ -1,0 +1,323 @@
+{
+  "name": "AI-Powered SEO Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 10
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -16,
+        0
+      ],
+      "id": "046cea4e-cfb3-44b7-963b-b709c382ca18",
+      "name": "Daily SERP Monitoring Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://serpapi.com/search.json",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "engine",
+              "value": "google"
+            },
+            {
+              "name": "q",
+              "value": "seo automation workflow"
+            },
+            {
+              "name": "api_key",
+              "value": "2aded0ac6bd856b958326329a72f5cd6e8d3f9fb7abcd0074e06231f98baa281"
+            },
+            {
+              "name": "num",
+              "value": "10"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "c7f99331-e653-441d-ab26-02c73a94c176",
+      "name": "Fetch SERP Data (SerpAPI)"
+    },
+    {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "results = _items[0][\"json\"][\"organic_results\"]\n\nreturn [{\n    \"json\": {\n        \"keyword\": \"seo automation workflow\",\n        \"results\": results\n    }\n}]\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "5701232b-d850-4919-9c5b-efea7e9727cc",
+      "name": "Extract & Structure SERP Results"
+    },
+    {
+      "parameters": {
+        "language": "pythonNative",
+        "pythonCode": "# content = _items[0][\"json\"][\"choices\"][0][\"message\"][\"content\"]\n\n# return [{\n#     \"json\": {\n#         \"analysis\": content\n#     }\n# }]\n\n\n\n\n# # Get AI output\n# report = _items[0][\"json\"][\"choices\"][0][\"message\"][\"content\"]\n\n# # Static footer (no timestamp here)\n# footer = \"\"\"\n\n\n# Report generated automatically via n8n workflow.\n# Data source: SerpAPI (Google SERP).\n# AI model: openai/gpt-oss (Groq).\n# \"\"\"\n\n# final_report = report + footer\n\n# return [\n#     {\n#         \"json\": {\n#             \"analysis\": final_report\n#         }\n#     }\n# ]\n\n\n# Get AI output and strip trailing quotes/spaces\nreport = _items[0][\"json\"][\"choices\"][0][\"message\"][\"content\"].strip().rstrip('\"')\n\nfooter = \"\\n\\n---\\nReport generated automatically via n8n workflow.\\nData source: SerpAPI (Google SERP).\\nAI model: openai/gpt-oss (Groq).\"\n\nfinal_report = report + footer\n\nreturn [\n    {\n        \"json\": {\n            \"analysis\": final_report\n        }\n    }\n]"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        848,
+        0
+      ],
+      "id": "8fe3b1ce-d750-46b6-985d-475cff73efd0",
+      "name": "Clean & Format AI Output"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1G1QSSpSHShlWBcRa4qBgCg0RCvrsVupuKFCp6lMGj90",
+          "mode": "list",
+          "cachedResultName": "SEO_AI_Analysis",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1G1QSSpSHShlWBcRa4qBgCg0RCvrsVupuKFCp6lMGj90/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1G1QSSpSHShlWBcRa4qBgCg0RCvrsVupuKFCp6lMGj90/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "analysis": "={{$json.analysis}}",
+            "date": "={{$now}}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "analysis",
+              "displayName": "analysis",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1136,
+        -224
+      ],
+      "id": "e104fbf7-69b0-4129-9e67-74177ea1a100",
+      "name": "Store Report in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "UqcoKcqv65ZSmEw8",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "seo-automation-report.md",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1zyxCqFHUoJopdAZc5mS1XnP_fsnF0181",
+          "mode": "list",
+          "cachedResultName": "SEO",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1zyxCqFHUoJopdAZc5mS1XnP_fsnF0181"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1312,
+        0
+      ],
+      "id": "5c85f12b-d3be-4aa6-8559-100ad00ea3cc",
+      "name": "Upload file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "FjwVher4iuyjNdnV",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "analysis",
+        "options": {
+          "fileName": "seo-automation-report.md"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1088,
+        0
+      ],
+      "id": "36e83ddb-c8b5-42d8-bba3-d62749687f0c",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.groq.com/openai/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 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"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"openai/gpt-oss-20b\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are a senior SEO strategist preparing a professional consulting report for a marketing team. Base conclusions strictly on the provided SERP data. Quantify observations wherever possible (e.g., '6 of the top 9 results'). Avoid generic advice. Tie every recommendation directly to ranking patterns observed. Be concise, structured, and insight-driven.\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Keyword: {{$json.keyword}}\\n\\nTop Ranking Results:\\n{{$json.results.map(r => 'Position ' + r.position + '\\\\nTitle: ' + r.title + '\\\\nURL: ' + r.link + '\\\\nSnippet: ' + (r.snippet || 'N/A') + '\\\\n').join('\\\\n')}}\\n\\nPrepare a structured SEO consulting report including:\\n\\n1. Executive Summary (3-4 lines)\\n2. Search Intent Breakdown (with reasoning based on SERP data)\\n3. Dominant Content Formats (quantified if possible)\\n4. Brand / Entity Presence Analysis\\n5. Competitive Gaps & Differentiation Opportunities\\n6. 3 Strategic SEO Recommendations (clearly tied to gaps identified)\\n7. 1 Measurable SEO Experiment (with KPI targets and timeline)\\n\\nKeep the report under 500 words. Avoid assumptions not supported by the ranking data.\"\n    }\n  ],\n  \"temperature\": 0.2\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        624,
+        0
+      ],
+      "id": "526a0430-abf8-4223-b633-e0e2d3866cb3",
+      "name": "Generate AI SEO Intelligence Report1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Fetch SERP Data (SerpAPI)": {
+      "main": [
+        [
+          {
+            "node": "Extract & Structure SERP Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract & Structure SERP Results": {
+      "main": [
+        [
+          {
+            "node": "Generate AI SEO Intelligence Report1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clean & Format AI Output": {
+      "main": [
+        [
+          {
+            "node": "Store Report in Google Sheets",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Daily SERP Monitoring Trigger": {
+      "main": [
+        [
+          {
+            "node": "Fetch SERP Data (SerpAPI)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file": {
+      "main": [
+        []
+      ]
+    },
+    "Generate AI SEO Intelligence Report1": {
+      "main": [
+        [
+          {
+            "node": "Clean & Format AI Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "3a00aa63-2fc9-435e-872f-432cfac6193c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0040a8da6c8efef13ce3ffe7766e379204744fb7ad7d9aa9e203891d1964156e"
+  },
+  "id": "AEDoMXMjE29JyY7b",
+  "tags": []
+}
