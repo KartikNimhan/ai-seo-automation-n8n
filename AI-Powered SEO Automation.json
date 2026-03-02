@@ -36,7 +36,7 @@
             },
             {
               "name": "api_key",
-              "value": "2aded0ac6bd856b958326329a72f5cd6e8d3f9fb7abcd0074e06231f98baa281"
+              "value": ""
             },
             {
               "name": "num",
@@ -205,7 +205,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer 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"
+              "value": "Bearer "
             },
             {
               "name": "Content-Type",
